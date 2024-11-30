@@ -1,0 +1,17 @@
+{
+	"project": {
+		"name": "JAR-Template",
+		"slot": 1,
+		"description": "Empty V5 C++ Project",
+		"platform": "V5",
+		"creationDate": "Sat, 30 Nov 2024 19:16:04 GMT",
+		"language": "cpp",
+		"cpp": {
+			"includePath": []
+		}
+	},
+	"extension": {
+		"version": "0.6.1",
+		"json": 1
+	}
+}

@@ -15,6 +15,7 @@ extern digital_out PistonCorner;
 extern digital_out PistonWall;
 extern digital_out PistonClaw;
 extern optical OpticalSensor;
+extern radio Radio;
 
 
 //To set up a motor called LeftFront here, you'd use

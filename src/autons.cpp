@@ -38,22 +38,21 @@ int colorSortingTask() {
             double rightMotorSpeed = RightDrive.velocity(percent);
 
             // Stop all robot movement
-            LeftDrive.stop();
+            /* LeftDrive.stop();
             RightDrive.stop();
             IntakeLeft.stop();
             IntakeRight.stop();
-
+            */
             // Perform ejection
-            PistonWall.set(true); // Extend piston
-            wait(1, seconds);
-            IntakeLeft.spin(reverse, 100, velocityUnits::pct);
-            IntakeRight.spin(reverse, 100, velocityUnits::pct);
+           //  PistonWall.set(true); // Extend piston
+           /* wait(1, seconds);
+            
             wait(1, seconds); // Wait to eject ring
-
+            */
             // Stop intake motors and retract piston
-            IntakeLeft.stop();
-            IntakeRight.stop();
-            PistonWall.set(false);
+            IntakeLeft.spin(reverse, 200, velocityUnits::pct);
+            IntakeRight.spin(reverse, 200, velocityUnits::pct);
+            // PistonWall.set(false);
             wait(0.5, seconds);
             // Resume previous motion
             LeftDrive.spin(forward, leftMotorSpeed, percent);
@@ -68,6 +67,25 @@ int colorSortingTask() {
     return 0;
 }
 
+double inchesToRotations(double inches) {
+    const double wheelDiameter = 2.75; // Diameter of the wheel in inches
+    const double wheelCircumference = wheelDiameter * 3.141592653; // Circumference of the wheel
+    return inches / wheelCircumference;
+}
+
+double inchesToDegrees(double inches) {
+    return inchesToRotations(inches) * 360; // 1 rotation = 360 degrees
+}
+
+// Wrapper functions for autonomous movement
+void driveInches(double inches, int speed) {
+    double rotations = inchesToRotations(inches);
+    chassis.driveFor(rotations, rotationUnits::rev, speed, velocityUnits::pct);
+}
+
+void turnDegrees(double degrees, int speed) {
+    chassis.turnToAngle(degrees, rotationUnits::deg, speed, velocityUnits::pct);
+}
 
 
 /**
@@ -76,16 +94,6 @@ int colorSortingTask() {
  * a slower max_voltage and greater settle_error than you would otherwise.
  */
 // VERY IMPORTANT. COPY THIS FOR ALL CODE
-void practice_test(){
-  if (autonStep == 0){
-    chassis.left_swing_to_angle(90);
-    autonStep++;
-  } else if(autonStep == 1){
-    chassis.drive_distance(36);
-  } else if(autonStep == 2){
-    chassis.turn_to_angle(0);
-  }
-}
 void odom_constants(){
   default_constants();
   chassis.heading_max_voltage = 10;
@@ -185,4 +193,207 @@ void holonomic_odom_test(){
   chassis.holonomic_drive_to_pose(18, 0, 180);
   chassis.holonomic_drive_to_pose(0, 18, 270);
   chassis.holonomic_drive_to_pose(0, 0, 0);
+}
+
+void practice_test(){
+  if (autonStep == 0){
+    chassis.left_swing_to_angle(90);
+    autonStep++;
+  } else if(autonStep == 1){
+    driveInches(10,)
+    autonStep++;
+  } else if(autonStep == 2){
+    turnDegrees(225,50);
+    autonStep++;
+  }
+}
+
+void blue_ringside(){
+  if (autonStep == 0){
+    driveInches(-30,75);
+    PistonMogo.set(false);
+    PistonWall.set(true);
+    wait(100, msec);
+    autonStep++;
+  } else if(autonStep == 1){
+    turnDegrees(-45, 50);
+    wait(100, msec);
+    autonStep++;
+  } else if(autonStep == 2){
+    driveInches(-7,20);
+    wait(100, msec);
+    driveInches(-3,45);
+    PistonMogo.set(true);
+    autonStep++;
+  } else if(autonStep == 2){
+    IntakeLeft.spin(forward, 10000, velocityUnits::pct);
+    IntakeRight.spin(forward, 10000, velocityUnits::pct);
+    autonStep++;
+  } else if(autonStep == 3){
+    turnDegrees(-90,30);
+    wait(100,msec);
+    autonStep++;
+  } else if(autonStep == 4){
+    IntakeLeft.spin(forward, 10000, velocityUnits::pct);
+    IntakeRight.spin(forward, 10000, velocityUnits::pct); 
+    driveInches(30,25);
+    wait(100,msec);
+    autonStep++;
+  } else if(autonStep == 5){
+    IntakeLeft.spin(forward, 10000, velocityUnits::pct);
+    IntakeRight.spin(forward, 10000, velocityUnits::pct); 
+    turnDegrees(20,20);
+    wait(100,msec);
+    autonStep++;
+  } else if(autonStep == 6){
+    IntakeLeft.spin(forward, 10000, velocityUnits::pct);
+    IntakeRight.spin(forward, 10000, velocityUnits::pct); 
+    driveInches(5,30);
+    autonStep++;
+  } else if(autonStep == 7){
+    IntakeLeft.spin(forward, 10000, velocityUnits::pct);
+    IntakeRight.spin(forward, 10000, velocityUnits::pct); 
+    driveInches(-5,30);
+    autonStep++;
+  } else if(autonStep == 8){
+    turnDegrees(80,20);
+    wait(100,msec);
+    autonStep++;
+  } else if(autonStep == 9){
+    IntakeLeft.spin(forward, 10000, velocityUnits::pct);
+    IntakeRight.spin(forward, 10000, velocityUnits::pct); 
+    driveInches(40,50);
+    wait(200,msec);
+    autonStep++;
+  } else if(autonStep == 10){
+    PistonDoinker.set(true);
+    turnDegrees(10,25);
+    wait(100,msec);
+    autonStep++;
+  } else if(autonStep == 11){
+    IntakeLeft.spin(forward, 10000, velocityUnits::pct);
+    IntakeRight.spin(forward, 10000, velocityUnits::pct);
+    driveInches(70, 50);
+    autonStep++;
+    wait(200, msec);
+  } else if (autonStep == 12){
+    turnDegrees(180,50);
+    wait(100,msec);
+    autonStep++;
+  } else if (autonStep == 13){
+    IntakeLeft.spin(forward, 10000, velocityUnits::pct);
+    IntakeRight.spin(forward, 10000, velocityUnits::pct);
+    PistonDoinker.set(false);
+    wait(100,msec);
+    autonStep++;
+  } else if (autonStep == 14){
+    IntakeLeft.spin(forward, 10000, velocityUnits::pct);
+    IntakeRight.spin(forward, 10000, velocityUnits::pct);
+    degreesTurn(-30,40);
+    wait(50,msec);
+    autonStep++;
+  } else if (autonStep == 15){
+    driveInches(60,80);
+    wait(100, msec);
+  }
+}
+
+void red_ringside(){
+  if (autonStep == 0){
+    driveInches(-30,75);
+    PistonMogo.set(false);
+    PistonWall.set(true);
+    wait(100, msec);
+    autonStep++;
+  } else if(autonStep == 1){
+    turnDegrees(45, 50);
+    wait(100, msec);
+    autonStep++;
+  } else if(autonStep == 2){
+    driveInches(-7,20);
+    wait(100, msec);
+    driveInches(-3,45);
+    PistonMogo.set(true);
+    autonStep++;
+  } else if(autonStep == 2){
+    IntakeLeft.spin(forward, 10000, velocityUnits::pct);
+    IntakeRight.spin(forward, 10000, velocityUnits::pct);
+    autonStep++;
+  } else if(autonStep == 3){
+    turnDegrees(90,20);
+    wait(100,msec);
+    autonStep++;
+  } else if(autonStep == 4){
+    IntakeLeft.spin(forward, 10000, velocityUnits::pct);
+    IntakeRight.spin(forward, 10000, velocityUnits::pct); 
+    driveInches(30,25);
+    wait(100,msec);
+    autonStep++;
+  } else if(autonStep == 5){
+    IntakeLeft.spin(forward, 10000, velocityUnits::pct);
+    IntakeRight.spin(forward, 10000, velocityUnits::pct); 
+    turnDegrees(-20,20);
+    wait(100,msec);
+    autonStep++;
+  } else if(autonStep == 6){
+    IntakeLeft.spin(forward, 10000, velocityUnits::pct);
+    IntakeRight.spin(forward, 10000, velocityUnits::pct); 
+    driveInches(5,30);
+    autonStep++;
+  } else if(autonStep == 7){
+    IntakeLeft.spin(forward, 10000, velocityUnits::pct);
+    IntakeRight.spin(forward, 10000, velocityUnits::pct); 
+    driveInches(-5,30);
+    autonStep++;
+  } else if(autonStep == 8){
+    turnDegrees(-80,20);
+    wait(100,msec);
+    autonStep++;
+  } else if(autonStep == 9){
+    IntakeLeft.spin(forward, 10000, velocityUnits::pct);
+    IntakeRight.spin(forward, 10000, velocityUnits::pct); 
+    driveInches(40,60);
+    wait(200,msec);
+    autonStep++;
+  } else if(autonStep == 10){
+    IntakeLeft.spin(forward, 10000, velocityUnits::pct);
+    IntakeRight.spin(forward, 10000, velocityUnits::pct); 
+    PistonDoinker.set(true);
+    turnDegrees(-15,25);
+    wait(100,msec);
+    autonStep++;
+  } else if(autonStep == 11){
+    IntakeLeft.spin(forward, 10000, velocityUnits::pct);
+    IntakeRight.spin(forward, 10000, velocityUnits::pct);
+    driveInches(60, 50);
+    autonStep++;
+    wait(200, msec);
+  } else if (autonStep == 12){
+    turnDegrees(180,50);
+    wait(100,msec);
+    autonStep++;
+  } else if (autonStep == 13){
+    IntakeLeft.spin(forward, 10000, velocityUnits::pct);
+    IntakeRight.spin(forward, 10000, velocityUnits::pct);
+    PistonDoinker.set(false);
+    wait(100,msec);
+    autonStep++;
+  } else if (autonStep == 14){
+    IntakeLeft.spin(forward, 10000, velocityUnits::pct);
+    IntakeRight.spin(forward, 10000, velocityUnits::pct);
+    degreesTurn(30,40);
+    wait(50,msec);
+    autonStep++;
+  } else if (autonStep == 15){
+    driveInches(60,80);
+    wait(100, msec);
+  }
+}
+
+void blue_goalside(){
+
+}
+
+void red_ringside(){
+
 }
